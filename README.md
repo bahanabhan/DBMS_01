@@ -280,15 +280,15 @@ Answer the following questions in your own words and add your answers directly b
 
 **Question 1.1:** Why is `grep -v "^timestamp"` needed in the shell solution even though the files are already filtered with `grep -h "T02"`? Could this step be omitted? Justify your answer.
 
-> *Your answer:*
+> To remove the header line from the CSV files. Without it, the word "timestamp" would be treated as data during sorting.
 
 **Question 1.2:** The shell solution uses `sensordata/T02_*.csv` as a file pattern, even though `grep -h "T02"` already filters for `T02`. Why is the file pattern still important — and what would happen if you used `sensordata/*.csv` instead?
 
-> *Your answer:*
+> For speed. It ensures grep only scans relevant files. Using *.csv forces the system to open and read all 120 files unnecessarily.
 
 **Question 1.3:** The SQL solution uses `ORDER BY timestamp` even though `timestamp` is stored as type `TEXT`. Why does chronological sorting still work correctly? Under what condition would it fail?
 
-> *Your answer:*
+> Because the ISO 8601 format (YYYY-MM-DD) is alphabetically sequential. It would fail if the format were DD-MM-YYYY
 
 ---
 
@@ -367,15 +367,16 @@ EOF
 
 **Question 2.1:** The shell solution filters by date using `grep -rh "2026-03"`. What problem could arise if a sensor value happened to contain the string `2026-03` — for example as part of an error note? How does the SQL solution handle this problem?
 
-> *Your answer:*
+> It could cause false positives if that string appears in a temperature value or note. SQL avoids this by filtering only the timestamp column.
 
 **Question 2.2:** The SQL solution uses `timestamp LIKE '2026-03-%'` for the date filter instead of a proper date function. Name one advantage and one disadvantage of this approach.
 
-> *Your answer:*
+> Advantage: Simple syntax and fast string matching.
+> Disadvantage: No "date awareness" for math (e.g., adding days or handling leap years).
 
 **Question 2.3:** The SQL solution returns results sorted by `ORDER BY value_celsius DESC`. The shell solution does not include this sorting. Extend the shell solution to also sort by temperature in descending order and write your command here.
 
-> *Your answer (extended shell command):*
+> grep -rh "2026-03" sensordata/ | grep -v "^timestamp" | awk -F',' '$4 > 25.0' | sort -t',' -k4,4nr
 
 ---
 
@@ -469,15 +470,22 @@ EOF
 
 **Question 3.1:** The `awk` solution initialises `min=9999` and `max=-9999`. What would happen if all temperature values in the dataset were greater than 9999? How could the initialisation be made more robust?
 
-> *Your answer:*
+> If all temperatures were >9999, min would stay 9999 (wrong). Fix: Initialize using the first record: NR==1 {min=max=$1}.
 
 **Question 3.2:** The SQL solution uses `GROUP BY sensor_id`. What would the query return *without* this clause — i.e. if you ran `SELECT sensor_id, MIN(value_celsius), MAX(value_celsius), ROUND(AVG(value_celsius), 1) FROM readings`? Try it and describe the result.
 
-> *Your answer:*
+> It returns a single row with the min/max/avg of the entire database instead of individual sensors.
 
 **Question 3.3:** Extend the SQL query with an additional column `COUNT(*) AS num_readings` that shows the total number of measurements for each sensor. Write the complete extended query here.
 
-> *Your answer (extended SQL query):*
+> SELECT sensor_id, 
+       MIN(value_celsius) AS min_temp, 
+       MAX(value_celsius) AS max_temp, 
+       ROUND(AVG(value_celsius), 1) AS avg_temp,
+       COUNT(*) AS num_readings
+FROM   readings
+GROUP  BY sensor_id
+ORDER  BY sensor_id;
 
 ---
 
@@ -488,26 +496,27 @@ After completing all three tasks, answer the following questions:
 **Question A — Writing effort:**
 Which approach was easier to write correctly on the first try? Explain which properties of each language contributed to this.
 
-> *Your answer:*
+> SQL was easier. It uses natural keywords, whereas Shell requires complex pipes and manual logic.
 
 **Question B — Extensibility:**
 What would you need to change in the shell solution if a fifth sensor `T05` were added? What about the SQL solution? Which approach scales better — and why?
 
-> *Your answer:*
+> SQL scales better. Adding sensor T05 requires no query changes, while the Shell script would need a manual update to its loop list.
 
 **Question C — Performance:**
 The shell solution reads files from disk on every invocation. A database can cache frequently queried data in memory. What does this mean for performance with 10 000 sensors and multi-year measurement data?
 
-> *Your answer:*
+> For 10,000 sensors, Shell fails due to massive Disk I/O (opening files). Databases use indexing and caching to stay fast
 
 **Question D — Declarative vs. imperative:**
 SQL is called a *declarative* language: you describe *what* you want, not *how* to compute it. Bash/awk, by contrast, are *imperative*: you write step by step how the result is to be computed. In which of the three tasks did you feel this difference most clearly? Justify your choice.
 
-> *Your answer:*
+> Task 3. In Shell, I wrote the calculation steps (imperative). In SQL, I just named the result I wanted (declarative).
 
 > **Screenshot 7:** Take a final screenshot of your terminal showing the SQLite prompt with a query of your own invention on the `readings` table — one you came up with yourself that goes beyond the tasks above — and insert it here.
 >
-> `[insert screenshot]`
+> <img width="1920" height="1080" alt="tsak4" src="https://github.com/user-attachments/assets/f206b2bc-af40-4183-8fa8-d0d97010970d" />
+
 
 ---
 
