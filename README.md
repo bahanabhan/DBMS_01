@@ -61,7 +61,8 @@ If any of the above commands return `command not found`, resolve the installatio
 
 > **Screenshot 1:** Take a screenshot of your terminal showing all four successful version checks and insert it here.
 >
-> `[insert screenshot]`
+> <img width="1920" height="1080" alt="terminal output" src="https://github.com/user-attachments/assets/35a7fa7b-0c59-424f-b050-2f7c38506657" />
+
 
 ---
 
@@ -109,7 +110,8 @@ cat sensordata/T01_2026-03-01.csv
 
 > **Screenshot 2:** Take a screenshot showing the output of `ls sensordata/ | head -8` and the contents of one CSV file, and insert it here.
 >
-> `[insert screenshot]`
+> <img width="1920" height="1080" alt="Header -8" src="https://github.com/user-attachments/assets/4f06ee75-9b9e-4b14-9b6b-9c86e67f6233" />
+
 
 ### What does the script do, line by line?
 
@@ -199,7 +201,8 @@ echo "Import complete."
 
 > **Screenshot 3:** Take a screenshot showing the successful execution of the import script and the result of the `COUNT(*)` query, and insert it here.
 >
-> `[insert screenshot]`
+> <img width="1920" height="1080" alt="import" src="https://github.com/user-attachments/assets/130fe325-34c1-41f2-ba1c-2718cb1be524" />
+
 
 ---
 
@@ -268,7 +271,8 @@ EOF
 
 > **Screenshot 4:** Take a screenshot showing the output of the Task 1 SQLite query (the first and last few rows are sufficient), and insert it here.
 >
-> `[insert screenshot]`
+> <img width="1920" height="1080" alt="task 1" src="https://github.com/user-attachments/assets/283e4de3-e433-4f82-9ee7-700df39968e8" />
+
 
 ### Questions for Task 1
 
@@ -356,7 +360,8 @@ EOF
 
 > **Screenshot 5:** Take a screenshot showing the output of the Task 2 SQLite query and insert it here.
 >
-> `[insert screenshot]`
+> <img width="1920" height="1080" alt="task2" src="https://github.com/user-attachments/assets/2124e0e5-846e-49dc-8db7-078ad3c73c59" />
+
 
 ### Questions for Task 2
 
@@ -457,7 +462,8 @@ EOF
 
 > **Screenshot 6:** Take a screenshot showing the output of the Task 3 SQLite query — the four rows with sensor statistics — and insert it here.
 >
-> `[insert screenshot]`
+> <img width="1920" height="1080" alt="task 3" src="https://github.com/user-attachments/assets/2e3b6530-18b5-49d3-93b5-4f96c9b78f1c" />
+
 
 ### Questions for Task 3
 
